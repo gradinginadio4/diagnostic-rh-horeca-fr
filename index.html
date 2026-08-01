@@ -180,6 +180,24 @@
   .score-desc{font-size:15.5px;color:var(--ink-soft);max-width:460px;}
   .tier-critical .score-desc{color:rgba(255,255,255,0.82);}
 
+  .hook-cta{
+    background:var(--navy);border-radius:20px;
+    padding:28px 26px;margin-bottom:28px;
+    text-align:center;
+  }
+  .hook-text{
+    color:var(--white);font-size:16px;line-height:1.5;
+    margin-bottom:18px;max-width:480px;margin-left:auto;margin-right:auto;
+  }
+  .hook-btn{
+    font-family:'Epilogue',sans-serif;font-weight:700;font-size:15.5px;
+    background:var(--pink);color:var(--navy);
+    border:none;cursor:pointer;
+    padding:14px 26px;border-radius:11px;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .hook-btn:hover{background:#F273CF;transform:translateY(-1px);}
+
   .breakdown{display:flex;flex-direction:column;gap:12px;margin-bottom:34px;}
   .breakdown-item{
     display:flex;justify-content:space-between;align-items:center;
@@ -297,11 +315,16 @@
       <p class="score-desc" id="score-desc"></p>
     </div>
 
+    <div class="hook-cta" id="hook-cta">
+      <p class="hook-text">Vous avez <strong id="hook-days-num">--</strong> jours d'autonomie. On a un protocole de 14 jours pour vous en donner 90. Réservez 20 minutes — on regarde ensemble votre poste le plus exposé, gratuitement.</p>
+      <button class="hook-btn" id="btn-hook-cta">Réserver mon appel gratuit →</button>
+    </div>
+
     <div class="breakdown" id="breakdown"></div>
 
-    <div class="carte">
-      <h2>Recevez votre plan d'action détaillé</h2>
-      <p class="sub">Un document PDF avec vos 4 points de vulnérabilité et les 3 premières actions à prendre — envoyé directement dans votre boîte mail.</p>
+    <div class="carte" id="carte-form">
+      <h2>Programmez votre appel gratuit</h2>
+      <p class="sub">Laissez vos coordonnées : un membre de notre équipe vous recontacte pour programmer votre appel gratuit de 20 minutes.</p>
 
       <form id="form-capture">
         <label for="prenom">Votre prénom</label>
@@ -315,14 +338,14 @@
 
         <input type="hidden" id="score-hidden" name="score_jours">
 
-        <button type="submit" id="btn-submit">Recevoir mon plan d'action</button>
-        <p class="micro">Aucun spam. Juste votre résultat, directement dans votre boîte mail.</p>
+        <button type="submit" id="btn-submit">Demander mon appel gratuit</button>
+        <p class="micro">Aucun spam. Juste un membre de notre équipe qui vous recontacte pour fixer un créneau.</p>
         <p class="erreur" id="msg-erreur">Une erreur est survenue. Réessayez dans un instant.</p>
       </form>
 
       <div class="succes" id="bloc-succes">
         <h2>C'est envoyé !</h2>
-        <p>Votre plan d'action arrive dans votre boîte mail dans quelques minutes.</p>
+        <p>Un membre de notre équipe vous recontacte pour programmer votre appel gratuit de 20 minutes.</p>
       </div>
     </div>
 
@@ -467,6 +490,7 @@
     scoreCard.className = 'score-card ' + tierClass;
     tierLabel.textContent = tier;
     document.getElementById('score-days-num').textContent = days;
+    document.getElementById('hook-days-num').textContent = days;
     desc.textContent = tierText;
     document.getElementById('score-hidden').value = days + ' jours (' + tier + ')';
 
@@ -487,6 +511,12 @@
 
     window.scrollTo({top:0, behavior:'smooth'});
   }
+
+  document.getElementById('btn-hook-cta').addEventListener('click', () => {
+    const carteForm = document.getElementById('carte-form');
+    carteForm.scrollIntoView({behavior:'smooth', block:'start'});
+    setTimeout(() => { document.getElementById('prenom').focus(); }, 400);
+  });
 
   document.getElementById('btn-restart').addEventListener('click', () => {
     current = 0;
@@ -533,7 +563,7 @@
     } catch (err) {
       erreur.style.display = 'block';
       btnSubmit.disabled = false;
-      btnSubmit.textContent = 'Recevoir mon plan d\'action';
+      btnSubmit.textContent = 'Demander mon appel gratuit';
     }
   });
 </script>
